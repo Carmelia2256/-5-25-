@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Добро пожаловать{% endblock %}
+{% block content %}
+<h3>Добро пожаловать в Finance Tracker</h3>
+<p>Пожалуйста, авторизуйтесь</p>
+
+<!-- Форма входа -->
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">Имя пользователя</label>
+        <input type="text" name="username" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Пароль</label>
+        <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Войти</button>
+</form>
+{% endblock %}

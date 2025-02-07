@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Импорт / Экспорт{% endblock %}
+{% block content %}
+<h3>Импорт / Экспорт CSV</h3>
+
+<!-- Сообщения -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-info">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.csv_file.label }}
+    {{ form.csv_file }}
+    <button type="submit" class="btn btn-primary">Импортировать</button>
+</form>
+
+<hr>
+<a href="{% url 'export_csv' %}" class="btn btn-secondary">Экспортировать CSV</a>
+{% endblock %}

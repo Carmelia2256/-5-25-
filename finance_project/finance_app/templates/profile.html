@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<h2>Личный кабинет</h2>
+
+<p>Текущий баланс: <strong>{{ balance }}</strong></p>
+<p>Доходы: <strong>{{ incomes_sum }}</strong></p>
+<p>Расходы: <strong>{{ expenses_sum }}</strong></p>
+
+<hr>
+<h4>Структура расходов</h4>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<canvas id="expenseChart" width="400" height="200"></canvas>
+<script>
+  var ctx = document.getElementById('expenseChart').getContext('2d');
+  var labels = {{ expense_stats_labels|safe }};
+  var dataValues = {{ expense_stats_values|safe }};
+
+  new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: labels,
+          datasets: [{
+              data: dataValues,
+              backgroundColor: [
+                  'rgba(54, 162, 235, 0.6)',
+                  'rgba(255, 99, 132, 0.6)',
+                  'rgba(255, 206, 86, 0.6)',
+                  'rgba(75, 192, 192, 0.6)',
+                  // ... можно добавить ещё цветов
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: false,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+      }
+  });
+</script>
+<hr>
+<h4>Баланс по датам</h4>
+<canvas id="balanceChart" width="400" height="200"></canvas>
+<script>
+  // Линейный график баланса
+  var balanceLabels = {{ balance_labels|safe }};
+  var balanceValues = {{ balance_values|safe }};
+
+  var balanceCtx = document.getElementById('balanceChart').getContext('2d');
+  new Chart(balanceCtx, {
+    type: 'line',
+    data: {
+      labels: balanceLabels,
+      datasets: [{
+        label: 'Текущий баланс',
+        data: balanceValues,
+        fill: false,
+        borderColor: 'rgba(75, 192, 192, 1)',   // цвет линии
+        tension: 0.1                             // сглаживание линии (0.1 - небольшое)
+      }]
+    },
+    options: {
+      responsive: false,
+      maintainAspectRatio: false
+    }
+  });
+</script>
+{% endblock %}

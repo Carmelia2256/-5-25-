@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Мои транзакции{% endblock %}
+
+{% block content %}
+<h3>Мои транзакции</h3>
+
+<div class="row">
+    <!-- Колонка 1: Форма для добавления транзакции -->
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-header">
+                Добавить транзакцию
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.category.label }}</label>
+                        {{ form.category }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.amount.label }}</label>
+                        {{ form.amount }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.date.label }}</label>
+                        {{ form.date }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.description.label }}</label>
+                        {{ form.description }}
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Колонка 2: Таблица списка транзакций -->
+    <div class="col-md-8">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Категория</th>
+                    <th>Сумма</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for tx in transactions %}
+                <tr>
+                    <td>{{ tx.date|date:"d.m.Y" }}</td>
+                    <td>{{ tx.category.name }}</td>
+                    <td>{{ tx.amount }}</td>
+                    <td>{{ tx.description }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Флеш-сообщения -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-info mt-2">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+{% endblock %}
